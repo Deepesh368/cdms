@@ -22,9 +22,12 @@ public class Student {
     @Id
     private String rollNum;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String email;
+
+    @Column(nullable = false)
+    private boolean loggedIn;
 }
