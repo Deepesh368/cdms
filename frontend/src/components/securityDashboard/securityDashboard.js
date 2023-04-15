@@ -2,13 +2,13 @@ import { Grid, Button, Toolbar } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import Header from "./Navbar.js";
 import { Navigate, useNavigate } from "react-router-dom";
-import BasicTable from "./Table.js";
+import BasicTable from "./OrderTable.js";
 
 const Securitydashboard = () => {
   return (
     <div>
       <Header />
-      <Toolbar />
+      <Toolbar style={{marginTop: '2%'}} />
       <BasicTable />
     </div>
   );

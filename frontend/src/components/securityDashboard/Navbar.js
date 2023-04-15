@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <React.Fragment>
-      <AppBar sx={{ background: "#10BB40", minHeight: "70px", marginBottom: "111px" }}>
+      <AppBar sx={{ background: "#10BB40", minHeight: "70px"}}>
         <Toolbar>
           <Button
             // color="primary"
