@@ -50,40 +50,6 @@ const Ordertable = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          name="orderId"
-          type="text"
-          label="Order ID"
-          variant="outlined"
-          sx={{ margin: "1%" }}
-          onChange={handleChange}
-        />
-        <TextField
-          name="name"
-          type="text"
-          label="Name"
-          variant="outlined"
-          sx={{ margin: "1%" }}
-          onChange={handleChange}
-        />
-        <TextField
-          name="deliveryFrom"
-          type="text"
-          label="Delivered From"
-          variant="outlined"
-          sx={{ margin: "1%" }}
-          onChange={handleChange}
-        />
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          style={btnstyle}
-        >
-          Submit
-        </Button>
-      </form>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -112,6 +78,15 @@ const Ordertable = () => {
                 <TableCell align="right">{row.deliveryTime}</TableCell>
                 <TableCell align="right">{row.collectedByRollNum}</TableCell>
                 <TableCell align="right">{row.collected}</TableCell>
+                <TableCell align="right">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    style={collectbtnstyle}
+                  >
+                    Collect
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

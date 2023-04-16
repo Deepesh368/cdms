@@ -6,7 +6,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const Header = () => {
   let navigate = useNavigate();
-
+  let rollnumber = 'rollnumber'
   const logout = () => {
     return;
   };
@@ -30,7 +30,7 @@ const Header = () => {
               color: "white",
             }}
           >
-            <h3>Security</h3>
+            <h3>{rollnumber}</h3>
           </Typography>
           <Button
             sx={{
