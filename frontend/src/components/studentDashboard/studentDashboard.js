@@ -4,7 +4,7 @@ import Header from "./Navbar.js";
 import { Navigate, useNavigate } from "react-router-dom";
 import BasicTable from "./OrderTable.js";
 
-const Patientdashboard = () => {
+const Studentdashboard = () => {
   return (
     <div>
       <Header />
@@ -14,4 +14,4 @@ const Patientdashboard = () => {
   );
 };
 
-export default Patientdashboard;
+export default Studentdashboard;

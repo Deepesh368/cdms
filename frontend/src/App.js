@@ -4,7 +4,7 @@ import { Container } from "@material-ui/core";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Securitydashboard from "./components/securityDashboard/securityDashboard";
-import Patientdashboard from "./components/patientDashboard/patientDashboard";
+import Studentdashboard from "./components/studentDashboard/studentDashboard";
 
 const App = () => {
   return (
@@ -17,8 +17,8 @@ const App = () => {
             element={<Securitydashboard />}
           ></Route>
           <Route
-            path="/patientDashboard"
-            element={<Patientdashboard />}
+            path="/studentDashboard"
+            element={<Studentdashboard />}
           ></Route>
         </Routes>
       </Container>

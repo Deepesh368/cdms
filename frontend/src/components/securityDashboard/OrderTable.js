@@ -7,7 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@material-ui/core";
 
@@ -15,17 +14,21 @@ import data from "./mock_data.json";
 
 const initialState = {
   orderId: "",
-  name: "",
+  rollnumber: "",
   deliveryFrom: "",
   deliveryDate: moment().format("D/MM/YYYY"),
   deliveryTime: moment().format("HH:mm"),
   collectedByRollNum: "",
-  collected: "False",
+};
+
+const collectState = {
+  orderId: "",
+  collectedByRollNum: ""
 };
 
 const Ordertable = () => {
-  const [details, setDetails] = useState(data);
   const [formData, setFormData] = useState(initialState);
+  const [collectData, setcollectData] = useState(collectState);
 
   const btnstyle = {
     backgroundColor: "#20CD51",
@@ -48,6 +51,15 @@ const Ordertable = () => {
     console.log(formData);
   };
 
+  const handleCollectChange = (e, orderid) => {
+    setcollectData({ ...collectData, [e.target.name]: e.target.value, orderId: orderid});
+  }
+  
+  const handleCollectClick = (e) => {
+    e.preventDefault();
+    console.log(collectData);
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -60,9 +72,9 @@ const Ordertable = () => {
           onChange={handleChange}
         />
         <TextField
-          name="name"
+          name="rollnumber"
           type="text"
-          label="Name"
+          label="Roll Number"
           variant="outlined"
           sx={{ margin: "1%" }}
           onChange={handleChange}
@@ -88,13 +100,24 @@ const Ordertable = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Order ID</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Delivered From</TableCell>
-              <TableCell align="right">Delivered Date</TableCell>
-              <TableCell align="right">Delivered Time</TableCell>
-              <TableCell align="right">Collected By</TableCell>
-              <TableCell align="right">Collected</TableCell>
+              <TableCell>
+                <h3>Order ID</h3>
+              </TableCell>
+              <TableCell align="right">
+                <h3>Roll Number</h3>
+              </TableCell>
+              <TableCell align="right">
+                <h3>Delivered From</h3>
+              </TableCell>
+              <TableCell align="right">
+                <h3>Delivered Date</h3>
+              </TableCell>
+              <TableCell align="right">
+                <h3>Delivered Time</h3>
+              </TableCell>
+              <TableCell align="right">
+                <h3>Collected By</h3>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -106,12 +129,31 @@ const Ordertable = () => {
                 <TableCell component="th" scope="row">
                   {row.orderId}
                 </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.rollnumber}</TableCell>
                 <TableCell align="right">{row.deliveryFrom}</TableCell>
                 <TableCell align="right">{row.deliveryDate}</TableCell>
                 <TableCell align="right">{row.deliveryTime}</TableCell>
-                <TableCell align="right">{row.collectedByRollNum}</TableCell>
-                <TableCell align="right">{row.collected}</TableCell>
+                <TableCell align="right">
+                  <TextField
+                    name="collectedByRollNum"
+                    type="text"
+                    label="Roll Number"
+                    variant="outlined"
+                    defaultValue={row.collectedByRollNum}
+                    onChange={event => handleCollectChange(event, row.orderId)}
+                    sx={{ margin: "1%" }}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    style={collectbtnstyle}
+                    onClick={handleCollectClick}
+                  >
+                    Collect
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -1,20 +1,18 @@
 [
     {
     "orderId" : "11111", 
-    "name" : "Deepesh", 
+    "rollnumber" : "imt2019508", 
     "deliveryFrom" : "Amazon", 
     "deliveryDate" : "15/4/2022",
     "deliveryTime": "16:59", 
-    "collectedByRollNum" : "imt2019508",
-    "collected" : "False"
+    "collectedByRollNum" : ""
     },
     {
       "orderId": "22222",
-      "name": "Lalith",
+      "rollnumber": "imt2019508",
       "deliveryFrom": "Amazon",
       "deliveryDate": "15/4/2022",
       "deliveryTime": "20:15",
-      "collectedByRollNum": "imt2019509",
-      "collected": "False"
+      "collectedByRollNum": ""
     }
 ]
