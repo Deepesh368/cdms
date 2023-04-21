@@ -1,6 +1,6 @@
 package com.cdms.securityapp.repository;
 
-import java.security.Security;
+import com.cdms.securityapp.entity.Security;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

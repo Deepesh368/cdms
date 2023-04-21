@@ -1,6 +1,7 @@
 package com.cdms.securityapp.controller;
 
 import com.cdms.securityapp.service.SecurityAppService;
+import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -35,6 +36,13 @@ public class SecurityAppController {
 
     public record Creds(String uname, String pwd){}
 
+    @PostMapping("/login")
+    public void login(@RequestBody Creds creds){
+        String url = "http://localhost:9090/gateway/loginStudent";
+        ResponseEntity<String> re = this.restTemplate.postForEntity(url, creds, String.class);
+//        return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
+    }
+
     @GetMapping("/fetchOrders")
     public HttpEntity<ArrayList<OrderBody>> fetchOrders(){
         // call gateway
@@ -44,20 +52,22 @@ public class SecurityAppController {
     }
 
     @PostMapping("/addOrder")
-    public boolean addOrder(@RequestBody OrderBody orderBody){
+    public HttpEntity<OrderBody> addOrder(@RequestBody OrderBody orderBody){
         // call gateway
+        OrderBody newOrder = new OrderBody(orderBody.orderId, orderBody.rollNum, orderBody.deliveryFrom,
+                LocalDate.now(), LocalTime.now(), null);
         String url = "http://localhost:9090/gateway/addOrder";
-        HttpEntity<OrderBody> entity = new HttpEntity<>(orderBody);
-        ResponseEntity<Boolean> re = this.restTemplate.postForEntity(url, entity, Boolean.class);
-        return Boolean.TRUE.equals(re.getBody());
+        HttpEntity<OrderBody> entity = new HttpEntity<>(newOrder);
+        ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
+        return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }
 
     @PostMapping("/collectedOrder")
-    public boolean collectedOrder(@RequestBody OrderBody orderBody){
+    public HttpEntity<OrderBody> collectedOrder(@RequestBody OrderBody orderBody){
         // call gateway
         String url = "http://localhost:9090/gateway/collectedOrder";
         HttpEntity<OrderBody> entity = new HttpEntity<>(orderBody);
-        ResponseEntity<Boolean> re = this.restTemplate.postForEntity(url, entity, Boolean.class);
-        return Boolean.TRUE.equals(re.getBody());
+        ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
+        return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }
 }

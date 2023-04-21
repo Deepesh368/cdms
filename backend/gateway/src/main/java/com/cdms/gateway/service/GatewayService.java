@@ -4,15 +4,16 @@ import com.cdms.gateway.controller.GatewayController;
 import com.cdms.gateway.entity.Order;
 import com.cdms.gateway.entity.SecurityCred;
 import com.cdms.gateway.entity.StudentCred;
+import com.cdms.gateway.entity.StudentDetails;
 import com.cdms.gateway.repository.OrderRepo;
 import com.cdms.gateway.repository.SecurityCredRepo;
 import com.cdms.gateway.repository.StudentCredRepo;
+import com.cdms.gateway.repository.StudentDetailsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -23,15 +24,23 @@ public class GatewayService {
     private final OrderRepo orderRepo;
     private final StudentCredRepo studentCredRepo;
     private final SecurityCredRepo securityCredRepo;
+    private final StudentDetailsRepo studentDetailsRepo;
 
-    public void saveOrder(GatewayController.OrderBody orderBody) {
-        this.orderRepo.save(orderOf(orderBody));
+    public GatewayController.OrderBody saveOrder(GatewayController.OrderBody orderBody) {
+        Order order = this.orderRepo.save(orderOf(orderBody));
+        return orderBodyOf(order);
     }
 
-    public ArrayList<GatewayController.OrderBody> fetchOrders(String id) {
-        ArrayList<Order> orders = (ArrayList<Order>) this.orderRepo.findByOrderId(id);
+    public ArrayList<GatewayController.OrderBody> fetchOrders(String rollNum) {
+        ArrayList<Order> orders = (ArrayList<Order>) this.orderRepo.findByRollNum(rollNum);
         ArrayList<GatewayController.OrderBody> orderBodies = new ArrayList<>();
 
+//        ArrayList<Order> orders = (ArrayList<Order>) this.orderRepo.findAll(Sort.by(Sort.Direction.DESC, "deliveryDate"));
+//        orders.sort(Comparator.comparing(Order::getDeliveryTime));
+//        Collections.reverse(orders);
+//        orders.sort(Comparator.comparing(Order::getDeliveryDate));
+//        Collections.reverse(orders);
+//
         for(Order order: orders){
             orderBodies.add(orderBodyOf(order));
         }
@@ -63,14 +72,22 @@ public class GatewayService {
         return new Order(orderBody.orderId(), orderBody.rollNum(), orderBody.deliveryFrom(), orderBody.deliveryDate(), orderBody.deliveryTime(), orderBody.collectedByRollNum());
     }
 
-    public boolean verifyStudent(String uname, String pwd) {
+    public GatewayController.StudentDetailsBody verifyStudent(String uname, String pwd) {
         ArrayList<StudentCred> sc = (ArrayList<StudentCred>) this.studentCredRepo.findByRollNum(uname);
 
         if (sc.size()<1){
-            return false;
+            return sdBodyOf(new StudentDetails("", "", ""), false);
         }
 
-        return Objects.equals(sc.get(0).getPassword(), pwd);
+        if (Objects.equals(sc.get(0).getPassword(), pwd)){
+            ArrayList<StudentDetails> sds = (ArrayList<StudentDetails>) this.studentDetailsRepo.findByRollNum(uname);
+            if (sds.size()<1){
+                return sdBodyOf(new StudentDetails("", "", ""), false);
+            }
+            return sdBodyOf(sds.get(0), true);
+        }
+
+        return sdBodyOf(new StudentDetails("", "", ""), false);
     }
 
     public boolean verifySecurity(String uname, String pwd) {
@@ -81,5 +98,9 @@ public class GatewayService {
         }
 
         return Objects.equals(sc.get(0).getPassword(), pwd);
+    }
+
+    private GatewayController.StudentDetailsBody sdBodyOf(StudentDetails sd, boolean loggedIn){
+        return new GatewayController.StudentDetailsBody(sd.getRollNum(), sd.getName(), sd.getEmail(), loggedIn);
     }
 }

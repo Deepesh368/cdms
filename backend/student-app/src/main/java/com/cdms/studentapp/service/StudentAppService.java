@@ -1,5 +1,6 @@
 package com.cdms.studentapp.service;
 
+import com.cdms.studentapp.controller.StudentAppController;
 import com.cdms.studentapp.entity.Student;
 import com.cdms.studentapp.repository.StudentRepo;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,19 @@ public class StudentAppService {
             return true;
         }
         return false;
+    }
+
+    public boolean saveDetails(StudentAppController.StudentDetails studentDetails) {
+        Student student = this.studentRepo.save(studentOf(studentDetails));
+
+        if(student==null){
+            return false;
+        }
+
+        return true;
+    }
+
+    private Student studentOf(StudentAppController.StudentDetails sd){
+        return new Student(sd.rollNum(), sd.name(), sd.email(), sd.loggedIn());
     }
 }

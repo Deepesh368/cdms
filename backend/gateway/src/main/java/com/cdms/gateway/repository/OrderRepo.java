@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, String> {
     List<Order> findByOrderId(String id);
+    List<Order> findByRollNum(String rollNum);
 }

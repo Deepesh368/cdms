@@ -11,13 +11,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Data
+//@Data
 @Component
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Order")
+@Table(name="Orders")
 
 public class Order {
     @Id

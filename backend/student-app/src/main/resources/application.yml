@@ -1,12 +1,12 @@
 server:
-  port: 9090
+  port: 9200
 
 spring:
   application:
-    name: GATEWAY-SERVICE
+    name: STUDENT-SERVICE
   datasource:
-    url: jdbc:mysql://localhost:3306/Gateway_db
-    username: root
+    url: jdbc:mysql://localhost:3306/Student_db
+    username: lalith
     password: lalith
   jpa:
     hibernate:

@@ -20,25 +20,31 @@ public class GatewayController {
 
     private final GatewayService gatewayService;
 
-    record FetchOrderBody(String id){}
+    record FetchOrderBody(String rollNum){}
 
     public record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
 
     public record Creds(String uname, String pwd){}
 
+    public record StudentDetailsBody(String rollNum, String name, String email, boolean loggedIn){}
+
+    public record LoginResponse(String response, StudentDetailsBody studentDetailsBody){}
+
     @PostMapping("/addOrder")
-    public void addOrder(@RequestBody OrderBody orderBody){
-        this.gatewayService.saveOrder(orderBody);
+    public HttpEntity<OrderBody> addOrder(@RequestBody OrderBody orderBody){
+        OrderBody savedOrder = this.gatewayService.saveOrder(orderBody);
+        return new HttpEntity<OrderBody>(savedOrder);
     }
 
     @PostMapping("/collectedOrder")
-    public void collectedOrder(@RequestBody OrderBody orderBody){
-        this.gatewayService.saveOrder(orderBody);
+    public HttpEntity<OrderBody> collectedOrder(@RequestBody OrderBody orderBody){
+        OrderBody savedOrder = this.gatewayService.saveOrder(orderBody);
+        return new HttpEntity<OrderBody>(savedOrder);
     }
 
     @PostMapping("/fetchOrders")
     public HttpEntity<ArrayList<OrderBody>> fetchOrders(@RequestBody FetchOrderBody fetchOrderBody){
-        ArrayList<OrderBody> orders = this.gatewayService.fetchOrders(fetchOrderBody.id);
+        ArrayList<OrderBody> orders = this.gatewayService.fetchOrders(fetchOrderBody.rollNum);
         HttpEntity<ArrayList<OrderBody>> ordersEntity = new HttpEntity<>(orders);
         return ordersEntity;
     }
@@ -51,12 +57,16 @@ public class GatewayController {
     }
 
     @PostMapping("/loginStudent")
-    public HttpEntity<String> loginStudent(@RequestBody Creds creds){
-        boolean valid = this.gatewayService.verifyStudent(creds.uname, creds. pwd);
-        if (valid){
-            return new HttpEntity<String>("Verified");
+    public HttpEntity<LoginResponse> loginStudent(@RequestBody Creds creds){
+        StudentDetailsBody sdb = this.gatewayService.verifyStudent(creds.uname, creds.pwd);
+
+        if (sdb.loggedIn){
+            LoginResponse lr = new LoginResponse("Verified", sdb);
+            return new HttpEntity<>(lr);
         }
-        return new HttpEntity<String>("Invalid credentials");
+
+        LoginResponse lr = new LoginResponse("Invalid Credentials", sdb);
+        return new HttpEntity<>(lr);
     }
 
     @PostMapping("/loginSecurity")
