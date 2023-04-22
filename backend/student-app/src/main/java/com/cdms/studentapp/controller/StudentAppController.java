@@ -6,10 +6,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -20,6 +17,7 @@ import java.util.Objects;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/student")
+@CrossOrigin
 public class StudentAppController {
     private final StudentAppService studentAppService;
 

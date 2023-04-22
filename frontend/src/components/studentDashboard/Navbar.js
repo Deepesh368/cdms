@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
@@ -8,7 +8,10 @@ const Header = () => {
   let navigate = useNavigate();
   let rollnumber = 'rollnumber'
   const logout = () => {
-    return;
+    if (localStorage.getItem("user-info")) {
+      localStorage.removeItem("user-info");
+    }
+    navigate("/");
   };
 
   return (

@@ -8,7 +8,10 @@ const Header = () => {
   let navigate = useNavigate();
 
   const logout = () => {
-    return;
+    if (localStorage.getItem("user-info")) {
+      localStorage.removeItem("user-info");
+    }
+    navigate("/");
   };
 
   return (
