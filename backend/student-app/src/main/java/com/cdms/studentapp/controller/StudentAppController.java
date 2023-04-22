@@ -17,8 +17,7 @@ import java.util.Objects;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/student")
-//@CrossOrigin
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class StudentAppController {
     private final StudentAppService studentAppService;
 

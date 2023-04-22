@@ -6,8 +6,8 @@ spring:
     name: SECURITY-SERVICE
   datasource:
     url: jdbc:mysql://localhost:3306/Security_db
-    username: lalith
-    password: lalith
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: create-drop

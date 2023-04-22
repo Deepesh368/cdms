@@ -48,7 +48,12 @@ export default function SignIn() {
     let result_text = await result.text();
     if (result_text === "Verified") {
       localStorage.setItem("user-info", JSON.stringify(item));
-      window.location.reload();
+      let stored = JSON.parse(localStorage.getItem("user-info"));
+      if (stored["uname"] === "admin") {
+        navigate("/securityDashboard");
+      } else {
+        navigate("/studentDashboard");
+      }
     } else {
       console.log(result);
     }
