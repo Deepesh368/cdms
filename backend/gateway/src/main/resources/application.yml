@@ -6,7 +6,7 @@ spring:
     name: GATEWAY-SERVICE
   datasource:
     url: jdbc:mysql://localhost:3306/Gateway_db
-    username: root
+    username: lalith
     password: lalith
   jpa:
     hibernate:
