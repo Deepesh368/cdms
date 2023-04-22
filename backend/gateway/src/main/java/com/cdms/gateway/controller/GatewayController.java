@@ -22,6 +22,8 @@ public class GatewayController {
 
     record FetchOrderBody(String rollNum){}
 
+    record OnFetchOrderBody(ArrayList<OrderBody> orders){}
+
     public record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
 
     public record Creds(String uname, String pwd){}
@@ -43,16 +45,18 @@ public class GatewayController {
     }
 
     @PostMapping("/fetchOrders")
-    public HttpEntity<ArrayList<OrderBody>> fetchOrders(@RequestBody FetchOrderBody fetchOrderBody){
+    public HttpEntity<OnFetchOrderBody> fetchOrders(@RequestBody FetchOrderBody fetchOrderBody){
         ArrayList<OrderBody> orders = this.gatewayService.fetchOrders(fetchOrderBody.rollNum);
-        HttpEntity<ArrayList<OrderBody>> ordersEntity = new HttpEntity<>(orders);
+        OnFetchOrderBody ofob = new OnFetchOrderBody(orders);
+        HttpEntity<OnFetchOrderBody> ordersEntity = new HttpEntity<>(ofob);
         return ordersEntity;
     }
 
     @GetMapping("/fetchAllOrders")
-    public HttpEntity<ArrayList<OrderBody>> fetchAllOrders(){
+    public HttpEntity<OnFetchOrderBody> fetchAllOrders(){
         ArrayList<OrderBody> orders = this.gatewayService.fetchAllOrders();
-        HttpEntity<ArrayList<OrderBody>> ordersEntity = new HttpEntity<>(orders);
+        OnFetchOrderBody ofob = new OnFetchOrderBody(orders);
+        HttpEntity<OnFetchOrderBody> ordersEntity = new HttpEntity<>(ofob);
         return ordersEntity;
     }
 

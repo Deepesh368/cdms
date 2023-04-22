@@ -38,7 +38,7 @@ public class SecurityAppController {
 
     @PostMapping("/login")
     public void login(@RequestBody Creds creds){
-        String url = "http://localhost:9090/gateway/loginStudent";
+        String url = "http://localhost:9090/gateway/loginSecurity";
         ResponseEntity<String> re = this.restTemplate.postForEntity(url, creds, String.class);
 //        return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
     }

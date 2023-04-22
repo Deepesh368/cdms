@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
-let login_url = "";
+let login_url = "http://localhost:9200/student/login";
 
 export default function SignIn() {
   let navigate = useNavigate();
@@ -44,9 +44,11 @@ export default function SignIn() {
       },
       body: JSON.stringify(item),
     });
+    console.log(result);
     let result_text = await result.text();
     if (result_text === "Verified") {
       localStorage.setItem("user-info", JSON.stringify(item));
+      window.location.reload();
     } else {
       console.log(result);
     }
