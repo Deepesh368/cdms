@@ -1,10 +1,8 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,17 +10,46 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
+let login_url = "";
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("user-info")) {
+      let stored = JSON.parse(localStorage.getItem("user-info"));
+      if (stored["uname"] === "admin") {
+        navigate("/securityDashboard");
+      } else {
+        navigate("/studentDashboard");
+      }
+    }
+  });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      rollnumber: data.get("rollnumber"),
-      password: data.get("password"),
+    let data = new FormData(event.currentTarget);
+    let item = {
+      uname: data.get("rollnumber"),
+      pwd: data.get("password"),
+    };
+    console.log(item);
+    let result = await fetch(login_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
     });
+    let result_text = await result.text();
+    if (result_text === "Verified") {
+      localStorage.setItem("user-info", JSON.stringify(item));
+    } else {
+      console.log(result);
+    }
   };
 
   return (
