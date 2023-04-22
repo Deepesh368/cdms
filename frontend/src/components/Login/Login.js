@@ -44,6 +44,7 @@ export default function SignIn() {
       },
       body: JSON.stringify(item),
     });
+    console.log(result);
     let result_text = await result.text();
     if (result_text === "Verified") {
       localStorage.setItem("user-info", JSON.stringify(item));

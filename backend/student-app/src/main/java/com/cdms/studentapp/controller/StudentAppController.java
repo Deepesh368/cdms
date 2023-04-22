@@ -27,7 +27,7 @@ public class StudentAppController {
 
     record OnFetchOrderBody(ArrayList<OrderBody> orders){}
 
-    record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
+    public record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
 
     public record Creds(String uname, String pwd){}
 
@@ -45,18 +45,21 @@ public class StudentAppController {
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()).response);
     }
 
-    @GetMapping("/fetchOrders")
-    public HttpEntity<ArrayList<OrderBody>> fetchOrders(){
+    @PostMapping("/fetchOrders")
+    public HttpEntity<ArrayList<OrderBody>> fetchOrders(@RequestBody FetchOrderBody fetchOrderBody){
         // call gateway
-        HttpEntity<Boolean> he = checkLogin();
-        if(Boolean.FALSE.equals(he.getBody())){
-            return new HttpEntity<>(null);
-        }
+//        HttpEntity<Boolean> he = checkLogin();
+//        if(Boolean.FALSE.equals(he.getBody())){
+//            return new HttpEntity<>(null);
+//        }
 
-        FetchOrderBody fetchOrderBody = new FetchOrderBody(this.studentAppService.getRollNum());
+//        FetchOrderBody fetchOrderBody = new FetchOrderBody(this.studentAppService.getRollNum());
         String url = "http://localhost:9090/gateway/fetchOrders";
         ResponseEntity<OnFetchOrderBody> re = this.restTemplate.postForEntity(url, fetchOrderBody, OnFetchOrderBody.class);
-        return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
+        for(OrderBody orderBody: Objects.requireNonNull(re.getBody()).orders()){
+            System.out.println(orderBody);
+        }
+        return new HttpEntity<>(Objects.requireNonNull(re.getBody()).orders);
     }
 
     @GetMapping("/checkLogin")
