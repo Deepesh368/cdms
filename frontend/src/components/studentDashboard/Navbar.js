@@ -6,13 +6,19 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const Header = () => {
   let navigate = useNavigate();
-  let rollnumber = 'rollnumber'
+  let rollnumber = 'rollnumber';
+
   const logout = () => {
     if (localStorage.getItem("user-info")) {
       localStorage.removeItem("user-info");
     }
     navigate("/");
   };
+
+  if(localStorage.getItem("user-info")) {
+    rollnumber = JSON.parse(localStorage.getItem("user-info"));
+    rollnumber = rollnumber["uname"];
+  }
 
   return (
     <React.Fragment>
