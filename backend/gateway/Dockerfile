@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:19
 COPY ./target/gateway-0.0.1-SNAPSHOT.jar ./
 WORKDIR ./
 CMD ["java", "-jar", "gateway-0.0.1-SNAPSHOT.jar"]
