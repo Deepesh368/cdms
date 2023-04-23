@@ -6,8 +6,8 @@ spring:
     name: STUDENT-SERVICE
   datasource:
     url: jdbc:mysql://localhost:3306/Student_db
-    username: root
-    password: root
+    username: lalith
+    password: lalith
   jpa:
     hibernate:
       ddl-auto: create-drop
