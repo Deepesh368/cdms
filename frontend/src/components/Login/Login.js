@@ -11,11 +11,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const theme = createTheme();
 let login_url = "http://localhost:9200/student/login";
 
-export default function SignIn() {
+export default function LogIn() {
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -26,37 +27,38 @@ export default function SignIn() {
       } else {
         navigate("/studentDashboard");
       }
+    } else {
+      navigate("/");
     }
   });
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
+
     let item = {
       uname: data.get("rollnumber"),
       pwd: data.get("password"),
     };
-    console.log(item);
-    let result = await fetch(login_url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(item),
-    });
-    console.log(result);
-    let result_text = await result.text();
-    if (result_text === "Verified") {
-      localStorage.setItem("user-info", JSON.stringify(item));
-      let stored = JSON.parse(localStorage.getItem("user-info"));
-      if (stored["uname"] === "admin") {
-        navigate("/securityDashboard");
-      } else {
-        navigate("/studentDashboard");
-      }
-    } else {
-      console.log(result);
-    }
+
+    axios
+      .post(login_url, item)
+      .then(function (response) {
+        if (response.data === "Verified") {
+          localStorage.setItem("user-info", JSON.stringify(item));
+          let stored = JSON.parse(localStorage.getItem("user-info"));
+          if (stored["uname"] === "admin") {
+            navigate("/securityDashboard");
+          } else {
+            navigate("/studentDashboard");
+          }
+        } else {
+          console.log(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (

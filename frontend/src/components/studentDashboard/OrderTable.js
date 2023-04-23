@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,19 +6,25 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import moment from "moment";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Button } from "@material-ui/core";
+import axios from "axios";
 
-import data from "./mock_data.json";
 
 const Ordertable = () => {
-  const collectbtnstyle = {
-    backgroundColor: "#3455eb",
-    margin: "1.5%",
-    width: "150px",
-  };
+  const get_data_url = "http://localhost:9200/student/fetchOrders";
+  const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    axios
+      .post(get_data_url, {
+        rollNum: JSON.parse(localStorage.getItem("user-info"))["uname"],
+      })
+      .then(function (response) {
+        setdata(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  });
 
   return (
     <div>
@@ -55,7 +61,7 @@ const Ordertable = () => {
                 <TableCell component="th" scope="row">
                   {row.orderId}
                 </TableCell>
-                <TableCell align="right">{row.rollnumber}</TableCell>
+                <TableCell align="right">{row.rollNum}</TableCell>
                 <TableCell align="right">{row.deliveryFrom}</TableCell>
                 <TableCell align="right">{row.deliveryDate}</TableCell>
                 <TableCell align="right">{row.deliveryTime}</TableCell>
