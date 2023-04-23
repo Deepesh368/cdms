@@ -1,4 +1,4 @@
 FROM openjdk:17
-COPY ./target/security-app-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./
+COPY ./target/security-app-0.0.1-SNAPSHOT.jar ./
 WORKDIR ./
-CMD ["java", "-jar", "security-app-0.0.1-SNAPSHOT-jar-with-dependencies.jar"]
+CMD ["java", "-jar", "security-app-0.0.1-SNAPSHOT.jar"]
