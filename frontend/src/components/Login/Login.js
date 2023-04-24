@@ -30,7 +30,7 @@ export default function LogIn() {
     } else {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

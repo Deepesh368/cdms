@@ -24,7 +24,7 @@ const Ordertable = () => {
       .catch(function (error) {
         console.log(error);
       });
-  });
+  }, []);
 
   return (
     <div>
@@ -55,7 +55,7 @@ const Ordertable = () => {
           <TableBody>
             {data.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.orderId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">

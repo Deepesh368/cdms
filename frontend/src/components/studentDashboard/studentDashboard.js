@@ -15,7 +15,7 @@ const Studentdashboard = () => {
     } else {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
   return (
     <div>

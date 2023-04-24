@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,24 +9,30 @@ import Paper from "@mui/material/Paper";
 import moment from "moment";
 import TextField from "@mui/material/TextField";
 import { Button } from "@material-ui/core";
+import axios from "axios";
 
-import data from "./mock_data.json";
+// import data from "./mock_data.json";
 
 const initialState = {
   orderId: "",
-  rollnumber: "",
+  rollNum: "",
   deliveryFrom: "",
   deliveryDate: moment().format("D/MM/YYYY"),
   deliveryTime: moment().format("HH:mm"),
-  collectedByRollNum: "",
+  collectedByRollNum: null,
 };
 
 const collectState = {
   orderId: "",
-  collectedByRollNum: ""
+  collectedByRollNum: "",
 };
 
 const Ordertable = () => {
+  const add_order_url = "http://localhost:9100/security/addOrder";
+  const get_data_url = "http://localhost:9100/security/fetchOrders";
+  const collect_order_url = "http://localhost:9100/security/collectedOrder";
+
+  const [data, setData] = useState([]);
   const [formData, setFormData] = useState(initialState);
   const [collectData, setcollectData] = useState(collectState);
 
@@ -42,23 +48,52 @@ const Ordertable = () => {
     width: "150px",
   };
 
+  useEffect(() => {
+    axios
+      .post(get_data_url, {})
+      .then(function (response) {
+        setData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    axios
+      .post(add_order_url, formData)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleCollectChange = (e, orderid) => {
-    setcollectData({ ...collectData, [e.target.name]: e.target.value, orderId: orderid});
-  }
-  
+    setcollectData({
+      ...collectData,
+      [e.target.name]: e.target.value,
+      orderId: orderid,
+    });
+  };
+
   const handleCollectClick = (e) => {
     e.preventDefault();
-    console.log(collectData);
-  }
+    axios
+      .post(collect_order_url, collectData)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -123,13 +158,13 @@ const Ordertable = () => {
           <TableBody>
             {data.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.orderId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.orderId}
                 </TableCell>
-                <TableCell align="right">{row.rollnumber}</TableCell>
+                <TableCell align="right">{row.rollNum}</TableCell>
                 <TableCell align="right">{row.deliveryFrom}</TableCell>
                 <TableCell align="right">{row.deliveryDate}</TableCell>
                 <TableCell align="right">{row.deliveryTime}</TableCell>
@@ -140,7 +175,9 @@ const Ordertable = () => {
                     label="Roll Number"
                     variant="outlined"
                     defaultValue={row.collectedByRollNum}
-                    onChange={event => handleCollectChange(event, row.orderId)}
+                    onChange={(event) =>
+                      handleCollectChange(event, row.orderId)
+                    }
                     sx={{ margin: "1%" }}
                   />
                 </TableCell>
