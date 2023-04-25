@@ -7,10 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ import java.util.Objects;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/security")
+@CrossOrigin
 public class SecurityAppController {
     private final SecurityAppService securityAppService;
 
@@ -36,11 +34,16 @@ public class SecurityAppController {
 
     public record Creds(String uname, String pwd){}
 
+    public record SecurityDetailsBody(String secId, boolean loggedIn){}
+
+    public record SecLoginResponse(String response, SecurityDetailsBody securityDetailsBody){}
+
     @PostMapping("/login")
-    public void login(@RequestBody Creds creds){
+    public HttpEntity<String> login(@RequestBody Creds creds){
         String url = "http://localhost:9090/gateway/loginSecurity";
-        ResponseEntity<String> re = this.restTemplate.postForEntity(url, creds, String.class);
+        ResponseEntity<SecLoginResponse> re = this.restTemplate.postForEntity(url, creds, SecLoginResponse.class);
 //        return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
+        return new HttpEntity<>(Objects.requireNonNull(re.getBody()).response);
     }
 
     @GetMapping("/fetchOrders")
