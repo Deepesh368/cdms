@@ -4,10 +4,7 @@ import com.cdms.gateway.service.GatewayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,6 +13,7 @@ import java.util.ArrayList;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/gateway")
+@CrossOrigin
 public class GatewayController {
 
     private final GatewayService gatewayService;
@@ -30,7 +28,11 @@ public class GatewayController {
 
     public record StudentDetailsBody(String rollNum, String name, String email, boolean loggedIn){}
 
+    public record SecurityDetailsBody(String secId, boolean loggedIn){}
+
     public record LoginResponse(String response, StudentDetailsBody studentDetailsBody){}
+
+    public record SecLoginResponse(String response, SecurityDetailsBody securityDetailsBody){}
 
     @PostMapping("/addOrder")
     public HttpEntity<OrderBody> addOrder(@RequestBody OrderBody orderBody){
@@ -74,11 +76,15 @@ public class GatewayController {
     }
 
     @PostMapping("/loginSecurity")
-    public HttpEntity<String> loginSecurity(@RequestBody Creds creds){
-        boolean valid = this.gatewayService.verifySecurity(creds.uname, creds. pwd);
-        if (valid){
-            return new HttpEntity<String>("Verified");
+    public HttpEntity<SecLoginResponse> loginSecurity(@RequestBody Creds creds){
+        SecurityDetailsBody sdb = this.gatewayService.verifySecurity(creds.uname, creds.pwd);
+
+        if (sdb.loggedIn){
+            SecLoginResponse lr = new SecLoginResponse("Verified", sdb);
+            return new HttpEntity<>(lr);
         }
-        return new HttpEntity<String>("Invalid credentials");
+
+        SecLoginResponse lr = new SecLoginResponse("Invalid Credentials", sdb);
+        return new HttpEntity<>(lr);
     }
 }

@@ -90,14 +90,17 @@ public class GatewayService {
         return sdBodyOf(new StudentDetails("", "", ""), false);
     }
 
-    public boolean verifySecurity(String uname, String pwd) {
+    public GatewayController.SecurityDetailsBody verifySecurity(String uname, String pwd) {
         ArrayList<SecurityCred> sc = (ArrayList<SecurityCred>) this.securityCredRepo.findBySecId(uname);
 
         if (sc.size()<1){
-            return false;
+            return new GatewayController.SecurityDetailsBody("Invalid Credentials", false);
         }
 
-        return Objects.equals(sc.get(0).getPassword(), pwd);
+        if(Objects.equals(sc.get(0).getPassword(), pwd)){
+            return new GatewayController.SecurityDetailsBody("Verified", true);
+        }
+        return new GatewayController.SecurityDetailsBody("Invalid Credentials", false);
     }
 
     private GatewayController.StudentDetailsBody sdBodyOf(StudentDetails sd, boolean loggedIn){
