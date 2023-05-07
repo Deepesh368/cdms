@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdms-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdms-frontend
+  template:
+    metadata:
+      labels:
+        app: cdms-frontend
+    spec:
+      containers:
+        - name: cdms-frontend
+          image: deepesh007/cdms-frontend:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdms-frontend-srv
+spec:
+  type: NodePort
+  selector:
+    app: cdms-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
