@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-conf-security
+data:
+  host: mysql-security
+  name: Security_db

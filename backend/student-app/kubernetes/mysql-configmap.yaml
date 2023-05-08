@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-conf-student
+data:
+  host: mysql-student
+  name: Student_db
