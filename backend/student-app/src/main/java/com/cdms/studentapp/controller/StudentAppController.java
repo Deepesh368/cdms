@@ -20,6 +20,7 @@ import java.util.Objects;
 @CrossOrigin
 public class StudentAppController {
     private final StudentAppService studentAppService;
+    private final String gatewayIp = "http://192.168.49.2:30163";
 
     private RestTemplate restTemplate = new RestTemplateBuilder().build();
 
@@ -37,7 +38,7 @@ public class StudentAppController {
 
     @PostMapping("/login")
     public HttpEntity<String> login(@RequestBody Creds creds){
-        String url = "http://localhost:9090/gateway/loginStudent";
+        String url = gatewayIp + "/gateway/loginStudent";
         ResponseEntity<LoginResponse> re = this.restTemplate.postForEntity(url, creds, LoginResponse.class);
         if(Objects.requireNonNull(re.getBody()).response=="Verified"){
             boolean saved = this.studentAppService.saveDetails(re.getBody().studentDetails);
@@ -54,7 +55,7 @@ public class StudentAppController {
 //        }
 
 //        FetchOrderBody fetchOrderBody = new FetchOrderBody(this.studentAppService.getRollNum());
-        String url = "http://localhost:9090/gateway/fetchOrders";
+        String url = gatewayIp + "/gateway/fetchOrders";
         ResponseEntity<OnFetchOrderBody> re = this.restTemplate.postForEntity(url, fetchOrderBody, OnFetchOrderBody.class);
         for(OrderBody orderBody: Objects.requireNonNull(re.getBody()).orders()){
             System.out.println(orderBody);

@@ -24,6 +24,8 @@ public class GatewayController {
 
     public record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
 
+    public record CollectedOrderBody(String orderId, String collectedByRollNum){}
+
     public record Creds(String uname, String pwd){}
 
     public record StudentDetailsBody(String rollNum, String name, String email, boolean loggedIn){}
@@ -41,8 +43,8 @@ public class GatewayController {
     }
 
     @PostMapping("/collectedOrder")
-    public HttpEntity<OrderBody> collectedOrder(@RequestBody OrderBody orderBody){
-        OrderBody savedOrder = this.gatewayService.saveOrder(orderBody);
+    public HttpEntity<OrderBody> collectedOrder(@RequestBody CollectedOrderBody collectedOrderBody){
+        OrderBody savedOrder = this.gatewayService.collectedOrder(collectedOrderBody.orderId, collectedOrderBody.collectedByRollNum);
         return new HttpEntity<OrderBody>(savedOrder);
     }
 
