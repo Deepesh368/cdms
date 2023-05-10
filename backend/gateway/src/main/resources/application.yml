@@ -26,11 +26,11 @@ spring:
     username: ${DB_USERNAME:lalith}
     password: ${DB_PASSWORD:lalith}
     hikari:
-      minimumIdle: 2
-      maximumPoolSize: 10
-      idleTimeout: 120000
-      connectionTimeout: 300000
-      leakDetectionThreshold: 300000
+#      minimumIdle: 2
+#      maximumPoolSize: 10
+#      idleTimeout: 120000
+#      connectionTimeout: 300000
+#      leakDetectionThreshold: 300000
       initialization-fail-timeout: 0
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect

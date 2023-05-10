@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdms-frontend
+  name: cdms-frontend-depl
 spec:
   replicas: 1
   selector:
@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
         - name: cdms-frontend
-          image: deepesh007/cdms-frontend:latest
+          image: cdms-frontend:1.0
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cdms-frontend-srv
+  name: cdms-frontend-svc
 spec:
   type: NodePort
   selector:

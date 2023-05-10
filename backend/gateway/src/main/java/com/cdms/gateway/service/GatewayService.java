@@ -31,6 +31,19 @@ public class GatewayService {
         return orderBodyOf(order);
     }
 
+    public GatewayController.OrderBody collectedOrder(String orderId, String collRollNum) {
+        ArrayList<Order> orders = (ArrayList<Order>) this.orderRepo.findByOrderId(orderId);
+
+        if (orders.size()==0){
+            return orderBodyOf(blankOrder());
+        }
+
+        Order order = orders.get(0);
+        order.setCollectedById(collRollNum);
+        order = this.orderRepo.save(order);
+        return orderBodyOf(order);
+    }
+
     public ArrayList<GatewayController.OrderBody> fetchOrders(String rollNum) {
         ArrayList<Order> orders = (ArrayList<Order>) this.orderRepo.findByRollNum(rollNum);
         ArrayList<GatewayController.OrderBody> orderBodies = new ArrayList<>();
@@ -70,6 +83,10 @@ public class GatewayService {
 
     private Order orderOf(GatewayController.OrderBody orderBody){
         return new Order(orderBody.orderId(), orderBody.rollNum(), orderBody.deliveryFrom(), orderBody.deliveryDate(), orderBody.deliveryTime(), orderBody.collectedByRollNum());
+    }
+
+    private Order blankOrder(){
+        return new Order(null, null, null, null, null, null);
     }
 
     public GatewayController.StudentDetailsBody verifyStudent(String uname, String pwd) {

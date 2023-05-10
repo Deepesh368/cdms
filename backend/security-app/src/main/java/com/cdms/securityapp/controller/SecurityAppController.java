@@ -21,10 +21,13 @@ import java.util.Objects;
 @CrossOrigin
 public class SecurityAppController {
     private final SecurityAppService securityAppService;
+    private final String gatewayIp = "http://192.168.49.2:30163";
 
     private RestTemplate restTemplate = new RestTemplateBuilder().build();
 
     record OrderBody(String orderId, String rollNum, String deliveryFrom, LocalDate deliveryDate, LocalTime deliveryTime, String collectedByRollNum){}
+
+    public record CollectedOrderBody(String orderId, String collectedByRollNum){}
 
     record FetchOrderBody(String rollNum){}
 
@@ -40,7 +43,8 @@ public class SecurityAppController {
 
     @PostMapping("/login")
     public HttpEntity<String> login(@RequestBody Creds creds){
-        String url = "http://localhost:9090/gateway/loginSecurity";
+//        String url = "http://localhost:9090/gateway/loginSecurity";
+        String url = gatewayIp + "/gateway/loginSecurity";
         ResponseEntity<SecLoginResponse> re = this.restTemplate.postForEntity(url, creds, SecLoginResponse.class);
 //        return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()).response);
@@ -49,7 +53,8 @@ public class SecurityAppController {
     @GetMapping("/fetchOrders")
     public HttpEntity<ArrayList<OrderBody>> fetchOrders(){
         // call gateway
-        String url = "http://localhost:9090/gateway/fetchAllOrders";
+//        String url = "http://localhost:9090/gateway/fetchAllOrders";
+        String url = gatewayIp + "/gateway/fetchAllOrders";
         ResponseEntity<OnFetchOrderBody> re = this.restTemplate.getForEntity(url, OnFetchOrderBody.class);
         return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
     }
@@ -59,17 +64,19 @@ public class SecurityAppController {
         // call gateway
         OrderBody newOrder = new OrderBody(orderBody.orderId, orderBody.rollNum, orderBody.deliveryFrom,
                 LocalDate.now(), LocalTime.now(), null);
-        String url = "http://localhost:9090/gateway/addOrder";
+//        String url = "http://localhost:9090/gateway/addOrder";
+        String url = gatewayIp + "/gateway/addOrder";
         HttpEntity<OrderBody> entity = new HttpEntity<>(newOrder);
         ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }
 
     @PostMapping("/collectedOrder")
-    public HttpEntity<OrderBody> collectedOrder(@RequestBody OrderBody orderBody){
+    public HttpEntity<OrderBody> collectedOrder(@RequestBody CollectedOrderBody collectedOrderBody){
         // call gateway
-        String url = "http://localhost:9090/gateway/collectedOrder";
-        HttpEntity<OrderBody> entity = new HttpEntity<>(orderBody);
+//        String url = "http://localhost:9090/gateway/collectedOrder";
+        String url = gatewayIp + "/gateway/collectedOrder";
+        HttpEntity<CollectedOrderBody> entity = new HttpEntity<>(collectedOrderBody);
         ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }

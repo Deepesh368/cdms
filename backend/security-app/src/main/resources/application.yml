@@ -1,22 +1,42 @@
 server:
   port: 9100
 
+#spring:
+#  application:
+#    name: SECURITY-SERVICE
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/Security_db
+#    username: lalith
+#    password: lalith
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    database: mysql
 spring:
   application:
     name: SECURITY-SERVICE
   datasource:
-    url: jdbc:mysql://localhost:3306/Security_db
-    username: lalith
-    password: lalith
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost:3306}/${DB_NAME:Security_db} #?useSSL=false
+    username: ${DB_USERNAME:lalith}
+    password: ${DB_PASSWORD:lalith}
+    hikari:
+#      minimumIdle: 2
+#      maximumPoolSize: 10
+#      idleTimeout: 120000
+#      connectionTimeout: 300000
+#      leakDetectionThreshold: 300000
+      initialization-fail-timeout: 0
   jpa:
-    hibernate:
-      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    generate-ddl: true
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    database: mysql
-
+    hibernate:
+      ddl-auto: create
 #eureka:
 #  client:
 #    register-with-eureka: true
