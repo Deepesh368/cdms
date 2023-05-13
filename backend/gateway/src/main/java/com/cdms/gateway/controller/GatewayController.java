@@ -68,16 +68,16 @@ public class GatewayController {
     }
 
     @PostMapping("/login")
-    public HttpEntity<LoginResponse> login(@RequestBody Creds creds){
+    public HttpEntity<String> login(@RequestBody Creds creds){
         StudentDetailsBody sdb = this.gatewayService.verifyLogin(creds.uname, creds.pwd);
 
         if (sdb.loggedIn){
-            LoginResponse lr = new LoginResponse("Verified", sdb);
-            return new HttpEntity<>(lr);
+//            LoginResponse lr = new LoginResponse("Verified", sdb);
+            return new HttpEntity<>("Verified");
         }
 
-        LoginResponse lr = new LoginResponse("Invalid Credentials", sdb);
-        return new HttpEntity<>(lr);
+//        LoginResponse lr = new LoginResponse("Invalid Credentials", sdb);
+        return new HttpEntity<>("Invalid Credentials");
     }
 
     @PostMapping("/addCredentials")

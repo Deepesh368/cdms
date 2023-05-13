@@ -14,17 +14,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const theme = createTheme();
-let login_url = "http://192.168.49.2:30163/login";
+let login_url = "http://192.168.49.2:30163/gateway/login";
 
 export default function LogIn() {
   let navigate = useNavigate();
 
   useEffect(() => {
+    axios.post("http://192.168.49.2:30163/gateway/populateData")
+    .catch(function(error)){console.log(error)};
+
     if (localStorage.getItem("user-info")) {
       let stored = JSON.parse(localStorage.getItem("user-info"));
       if (stored["uname"] === "admin") {
         navigate("/securityDashboard");
-      } else {
+      }
+      else {
         navigate("/studentDashboard");
       }
     } else {
@@ -49,7 +53,8 @@ export default function LogIn() {
           let stored = JSON.parse(localStorage.getItem("user-info"));
           if (stored["uname"] === "admin") {
             navigate("/securityDashboard");
-          } else {
+          }
+          else {
             navigate("/studentDashboard");
           }
         } else {

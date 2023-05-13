@@ -38,7 +38,7 @@ public class StudentAppController {
 
     @PostMapping("/login")
     public HttpEntity<String> login(@RequestBody Creds creds){
-        String url = gatewayIp + "/gateway/login";
+        String url = gatewayIp + "/gateway/loginStudent";
         ResponseEntity<LoginResponse> re = this.restTemplate.postForEntity(url, creds, LoginResponse.class);
         if(Objects.requireNonNull(re.getBody()).response=="Verified"){
             boolean saved = this.studentAppService.saveDetails(re.getBody().studentDetails);

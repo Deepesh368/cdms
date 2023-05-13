@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cdms-frontend
-          image: cdms-frontend:1.0
+          image: lalithkrg/cdms-frontend
 ---
 apiVersion: v1
 kind: Service
@@ -25,5 +25,6 @@ spec:
   selector:
     app: cdms-frontend
   ports:
-    - port: 3000
+    - nodePort: 30170
+      port: 3000
       targetPort: 3000

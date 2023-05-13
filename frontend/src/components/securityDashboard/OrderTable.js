@@ -17,8 +17,8 @@ const initialState = {
   orderId: "",
   rollNum: "",
   deliveryFrom: "",
-  deliveryDate: moment().format("D/MM/YYYY"),
-  deliveryTime: moment().format("HH:mm"),
+//  deliveryDate: moment().format("D/MM/YYYY"),
+//  deliveryTime: moment().format("HH:mm"),
   collectedByRollNum: null,
 };
 
@@ -50,9 +50,10 @@ const Ordertable = () => {
 
   useEffect(() => {
     axios
-      .post(get_data_url, {})
+      .get(get_data_url)
       .then(function (response) {
         setData(response.data);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -65,6 +66,7 @@ const Ordertable = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     axios
       .post(add_order_url, formData)
       .then(function (response) {
@@ -107,7 +109,7 @@ const Ordertable = () => {
           onChange={handleChange}
         />
         <TextField
-          name="rollnumber"
+          name="rollNum"
           type="text"
           label="Roll Number"
           variant="outlined"

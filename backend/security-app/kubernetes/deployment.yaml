@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: security-app
-          image: security-app:1.0
+          image: lalithkrg/security-app
           ports:
             - containerPort: 9100
           env:   # Setting Enviornmental Variables
