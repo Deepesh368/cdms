@@ -20,7 +20,7 @@ export default function LogIn() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    axios.post("http://192.168.49.2:30163/gateway/populateData")
+    axios.get("http://192.168.49.2:30163/gateway/populateData")
     .catch(function(error){console.log(error)});
 
     if (localStorage.getItem("user-info")) {

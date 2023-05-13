@@ -3,6 +3,8 @@ package com.cdms.securityapp.controller;
 import com.cdms.securityapp.service.SecurityAppService;
 import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ import java.util.Objects;
 @RequestMapping("/security")
 @CrossOrigin
 public class SecurityAppController {
+
+    public static final Logger logger = LogManager.getLogger(SecurityAppController.class);
+
     private final SecurityAppService securityAppService;
     private final String gatewayIp = "http://192.168.49.2:30163";
 
@@ -55,7 +60,9 @@ public class SecurityAppController {
         // call gateway
 //        String url = "http://localhost:9090/gateway/fetchAllOrders";
         String url = gatewayIp + "/gateway/fetchAllOrders";
+        logger.info("Requesting to fetch all orders.");
         ResponseEntity<OnFetchOrderBody> re = this.restTemplate.getForEntity(url, OnFetchOrderBody.class);
+        logger.info("Fetch all orders, count: [" + re.getBody().orders.size()  + "]");
         return new HttpEntity<ArrayList<OrderBody>>(Objects.requireNonNull(re.getBody()).orders);
     }
 
@@ -65,9 +72,13 @@ public class SecurityAppController {
         OrderBody newOrder = new OrderBody(orderBody.orderId, orderBody.rollNum, orderBody.deliveryFrom,
                 LocalDate.now(), LocalTime.now(), null);
 //        String url = "http://localhost:9090/gateway/addOrder";
+        logger.info("Requesting to save order");
         String url = gatewayIp + "/gateway/addOrder";
         HttpEntity<OrderBody> entity = new HttpEntity<>(newOrder);
         ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
+        OrderBody savedOrder = re.getBody();
+        logger.info("Saved order: [" + savedOrder.orderId + "], for: [" + savedOrder.rollNum);
+
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }
 
@@ -77,7 +88,11 @@ public class SecurityAppController {
 //        String url = "http://localhost:9090/gateway/collectedOrder";
         String url = gatewayIp + "/gateway/collectedOrder";
         HttpEntity<CollectedOrderBody> entity = new HttpEntity<>(collectedOrderBody);
+        logger.info("Requesting to save collected order");
         ResponseEntity<OrderBody> re = this.restTemplate.postForEntity(url, entity, OrderBody.class);
+        OrderBody savedOrder = re.getBody();
+        logger.info("Collected order: [" + savedOrder.orderId + "], for: [" + savedOrder.rollNum + "], by: [" + savedOrder.collectedByRollNum + "]");
+
         return new HttpEntity<>(Objects.requireNonNull(re.getBody()));
     }
 }

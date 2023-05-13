@@ -6,7 +6,7 @@ server:
 #    name: SECURITY-SERVICE
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/Security_db
-#    username: lalith
+#    username: root
 #    password: lalith
 #  jpa:
 #    hibernate:
