@@ -22,8 +22,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_HOST:localhost:3306}/${DB_NAME:Security_db} #?useSSL=false
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:lalith}
+    username: ${DB_USERNAME:deepesh}
+    password: ${DB_PASSWORD:deepesh}
     hikari:
 #      minimumIdle: 2
 #      maximumPoolSize: 10
