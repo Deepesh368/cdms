@@ -28,9 +28,9 @@ const collectState = {
 };
 
 const Ordertable = () => {
-  const add_order_url = "http://localhost:9100/security/addOrder";
-  const get_data_url = "http://localhost:9100/security/fetchOrders";
-  const collect_order_url = "http://localhost:9100/security/collectedOrder";
+  const add_order_url = "http://192.168.49.2:30164/security/addOrder";
+  const get_data_url = "http://192.168.49.2:30164/security/fetchOrders";
+  const collect_order_url = "http://192.168.49.2:30164/security/collectedOrder";
 
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState(initialState);

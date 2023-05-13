@@ -10,7 +10,7 @@ import axios from "axios";
 
 
 const Ordertable = () => {
-  const get_data_url = "http://localhost:9200/student/fetchOrders";
+  const get_data_url = "http://192.168.49.2:30165/student/fetchOrders";
   const [data, setdata] = useState([]);
 
   useEffect(() => {

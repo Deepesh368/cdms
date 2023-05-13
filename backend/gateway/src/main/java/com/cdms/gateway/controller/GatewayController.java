@@ -1,5 +1,6 @@
 package com.cdms.gateway.controller;
 
+import com.cdms.gateway.entity.Cred;
 import com.cdms.gateway.service.GatewayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -27,6 +28,8 @@ public class GatewayController {
     public record CollectedOrderBody(String orderId, String collectedByRollNum){}
 
     public record Creds(String uname, String pwd){}
+
+    public record CredsResponse(String response){}
 
     public record StudentDetailsBody(String rollNum, String name, String email, boolean loggedIn){}
 
@@ -64,9 +67,9 @@ public class GatewayController {
         return ordersEntity;
     }
 
-    @PostMapping("/loginStudent")
-    public HttpEntity<LoginResponse> loginStudent(@RequestBody Creds creds){
-        StudentDetailsBody sdb = this.gatewayService.verifyStudent(creds.uname, creds.pwd);
+    @PostMapping("/login")
+    public HttpEntity<LoginResponse> login(@RequestBody Creds creds){
+        StudentDetailsBody sdb = this.gatewayService.verifyLogin(creds.uname, creds.pwd);
 
         if (sdb.loggedIn){
             LoginResponse lr = new LoginResponse("Verified", sdb);
@@ -77,16 +80,19 @@ public class GatewayController {
         return new HttpEntity<>(lr);
     }
 
-    @PostMapping("/loginSecurity")
-    public HttpEntity<SecLoginResponse> loginSecurity(@RequestBody Creds creds){
-        SecurityDetailsBody sdb = this.gatewayService.verifySecurity(creds.uname, creds.pwd);
+    @PostMapping("/addCredentials")
+    public HttpEntity<CredsResponse> addCredentials(@RequestBody Creds creds){
+        this.gatewayService.saveCreds(creds.uname, creds.pwd);
+        return new HttpEntity<>(new CredsResponse("added"));
+    }
 
-        if (sdb.loggedIn){
-            SecLoginResponse lr = new SecLoginResponse("Verified", sdb);
-            return new HttpEntity<>(lr);
-        }
+    @GetMapping("/getCredentials")
+    public HttpEntity<ArrayList<Cred>> getCredentials(){
+        return new HttpEntity<>(this.gatewayService.getCreds());
+    }
 
-        SecLoginResponse lr = new SecLoginResponse("Invalid Credentials", sdb);
-        return new HttpEntity<>(lr);
+    @GetMapping("/populateData")
+    public HttpEntity<String> populateData(){
+        return new HttpEntity<>(this.gatewayService.populateData());
     }
 }

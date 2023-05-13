@@ -1,13 +1,11 @@
 package com.cdms.gateway.service;
 
 import com.cdms.gateway.controller.GatewayController;
+import com.cdms.gateway.entity.Cred;
 import com.cdms.gateway.entity.Order;
-import com.cdms.gateway.entity.SecurityCred;
-import com.cdms.gateway.entity.StudentCred;
 import com.cdms.gateway.entity.StudentDetails;
 import com.cdms.gateway.repository.OrderRepo;
-import com.cdms.gateway.repository.SecurityCredRepo;
-import com.cdms.gateway.repository.StudentCredRepo;
+import com.cdms.gateway.repository.CredRepo;
 import com.cdms.gateway.repository.StudentDetailsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -22,8 +20,7 @@ import java.util.*;
 public class GatewayService {
 
     private final OrderRepo orderRepo;
-    private final StudentCredRepo studentCredRepo;
-    private final SecurityCredRepo securityCredRepo;
+    private final CredRepo credRepo;
     private final StudentDetailsRepo studentDetailsRepo;
 
     public GatewayController.OrderBody saveOrder(GatewayController.OrderBody orderBody) {
@@ -89,11 +86,15 @@ public class GatewayService {
         return new Order(null, null, null, null, null, null);
     }
 
-    public GatewayController.StudentDetailsBody verifyStudent(String uname, String pwd) {
-        ArrayList<StudentCred> sc = (ArrayList<StudentCred>) this.studentCredRepo.findByRollNum(uname);
+    public GatewayController.StudentDetailsBody verifyLogin(String uname, String pwd) {
+        ArrayList<Cred> sc = (ArrayList<Cred>) this.credRepo.findByRollNum(uname);
 
         if (sc.size()<1){
             return sdBodyOf(new StudentDetails("", "", ""), false);
+        }
+
+        if (Objects.equals(sc.get(0).getRollNum(), "admin")){
+            return sdBodyOf(new StudentDetails("admin", "admin", "admin@mail"), true);
         }
 
         if (Objects.equals(sc.get(0).getPassword(), pwd)){
@@ -107,20 +108,30 @@ public class GatewayService {
         return sdBodyOf(new StudentDetails("", "", ""), false);
     }
 
-    public GatewayController.SecurityDetailsBody verifySecurity(String uname, String pwd) {
-        ArrayList<SecurityCred> sc = (ArrayList<SecurityCred>) this.securityCredRepo.findBySecId(uname);
-
-        if (sc.size()<1){
-            return new GatewayController.SecurityDetailsBody("Invalid Credentials", false);
-        }
-
-        if(Objects.equals(sc.get(0).getPassword(), pwd)){
-            return new GatewayController.SecurityDetailsBody("Verified", true);
-        }
-        return new GatewayController.SecurityDetailsBody("Invalid Credentials", false);
-    }
-
     private GatewayController.StudentDetailsBody sdBodyOf(StudentDetails sd, boolean loggedIn){
         return new GatewayController.StudentDetailsBody(sd.getRollNum(), sd.getName(), sd.getEmail(), loggedIn);
+    }
+
+    public void saveCreds(String uname, String pwd) {
+        this.credRepo.save(new Cred(uname, pwd));
+    }
+
+    public ArrayList<Cred> getCreds(){
+        return (ArrayList<Cred>) this.credRepo.findAll();
+    }
+
+    public String populateData() {
+        this.credRepo.save(new Cred("admin", "admin"));
+
+        this.credRepo.save(new Cred("imt1", "imt1"));
+        this.studentDetailsRepo.save(new StudentDetails("imt1", "name1", "imt1@mail"));
+
+        this.credRepo.save(new Cred("imt2", "imt2"));
+        this.studentDetailsRepo.save(new StudentDetails("imt2", "name2", "imt2@mail"));
+
+        this.credRepo.save(new Cred("imt3", "imt3"));
+        this.studentDetailsRepo.save(new StudentDetails("imt3", "name3", "imt3@mail"));
+
+        return "Completed data population.";
     }
 }

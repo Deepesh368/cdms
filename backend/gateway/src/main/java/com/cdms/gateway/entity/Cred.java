@@ -16,11 +16,11 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name="SecurityCred")
+@Table(name="Cred")
 
-public class SecurityCred {
+public class Cred {
     @Id
-    String secId;
+    String rollNum;
 
     @Column(nullable = false)
     String password;
