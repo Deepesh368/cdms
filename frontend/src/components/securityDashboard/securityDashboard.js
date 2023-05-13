@@ -10,7 +10,7 @@ const Securitydashboard = () => {
   useEffect(() => {
     if (localStorage.getItem("user-info")) {
       let stored = JSON.parse(localStorage.getItem("user-info"));
-      if (stored["rollnumber"] !== "admin") {
+      if (stored["uname"] !== "admin") {
         navigate("/studentDashboard");
       }
     } else {

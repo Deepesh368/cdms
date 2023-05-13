@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -24,7 +26,10 @@ public class GatewayService {
     private final StudentDetailsRepo studentDetailsRepo;
 
     public GatewayController.OrderBody saveOrder(GatewayController.OrderBody orderBody) {
-        Order order = this.orderRepo.save(orderOf(orderBody));
+        Order order = orderOf(orderBody);
+        order.setDeliveryDate(LocalDate.now());
+        order.setDeliveryTime(LocalTime.now());
+        order = this.orderRepo.save(order);
         return orderBodyOf(order);
     }
 

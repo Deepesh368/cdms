@@ -1,0 +1,146 @@
+---
+- name: Deploying with Kubernetes
+  hosts: localhost
+  tasks:
+    - name: install pre-requisites
+      pip:
+        name:
+          - openshift
+          - pyyaml
+          - kubernetes
+
+#    - name: Get list of namespaces using k8s module with custom kube-config file
+#      k8s_info:
+#        kind: NamespaceList
+#        kubeconfig: /home/lalith/.kube/config
+#      register: namespaces
+
+    - name: Create gateway sqldb credentials
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysqldb-credentials.yaml') | from_yaml }}"
+
+    - name: Create gateway sqldb root credentials
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysqldb-root-credentials.yaml') | from_yaml }}"
+
+    - name: Create gateway sql configmap
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysql-configmap.yaml') | from_yaml }}"
+
+    - name: Create gateway sql pvc
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysql-pvc.yaml') | from_yaml }}"
+
+    - name: Create gateway sql service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysql-service.yaml') | from_yaml }}"
+
+    - name: Create gateway sql deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/mysql-deployment.yaml') | from_yaml }}"
+
+    - name: Create gateway service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/service.yaml') | from_yaml }}"
+
+    - name: Create gateway deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/gateway/kubernetes/deployment.yaml') | from_yaml }}"
+
+#    - name: Create security-app sqldb credentials
+#      kubernetes.core.k8s:
+#        state: present
+#        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysqldb-credentials.yaml') | from_yaml }}"
+#
+#    - name: Create security-app sqldb root credentials
+#      kubernetes.core.k8s:
+#        state: present
+#        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysqldb-root-credentials.yaml') | from_yaml }}"
+
+    - name: Create security-app sql configmap
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysql-configmap.yaml') | from_yaml }}"
+
+    - name: Create gateway sql pvc
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysql-pvc.yaml') | from_yaml }}"
+
+    - name: Create security-app sql service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysql-service.yaml') | from_yaml }}"
+
+    - name: Create security-app sql deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/mysql-deployment.yaml') | from_yaml }}"
+
+    - name: Create security-app service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/service.yaml') | from_yaml }}"
+
+    - name: Create security-app deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/security-app/kubernetes/deployment.yaml') | from_yaml }}"
+
+#    - name: Create student-app sqldb credentials
+#      kubernetes.core.k8s:
+#        state: present
+#        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysqldb-credentials.yaml') | from_yaml }}"
+#
+#    - name: Create student-app sqldb root credentials
+#      kubernetes.core.k8s:
+#        state: present
+#        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysqldb-root-credentials.yaml') | from_yaml }}"
+
+    - name: Create student-app sql configmap
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysql-configmap.yaml') | from_yaml }}"
+
+    - name: Create gateway sql pvc
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysql-pvc.yaml') | from_yaml }}"
+
+    - name: Create student-app sql service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysql-service.yaml') | from_yaml }}"
+
+    - name: Create student-app sql deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/mysql-deployment.yaml') | from_yaml }}"
+
+    - name: Create student-app service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/service.yaml') | from_yaml }}"
+
+    - name: Create student-app deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './backend/student-app/kubernetes/deployment.yaml') | from_yaml }}"
+
+    - name: Create Frontend service
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './frontend/kubernetes/frontend-service.yaml') | from_yaml }}"
+
+    - name: Create Frontend Deployment
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', './frontend/kubernetes/frontend-depl.yaml') | from_yaml }}"
