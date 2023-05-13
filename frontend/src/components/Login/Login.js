@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const theme = createTheme();
-let login_url = "http://localhost:9200/student/login";
+let login_url = "http://192.168.49.2:30163/login";
 
 export default function LogIn() {
   let navigate = useNavigate();
