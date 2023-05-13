@@ -15,10 +15,10 @@
 #        kubeconfig: /home/lalith/.kube/config
 #      register: namespaces
 
-    - name: Example task
-      uri:
-        url: https://192.168.49.2:8443/version
-        validate_certs: no
+    # - name: Example task
+    #   uri:
+    #     url: https://192.168.49.2:8443/version
+    #     validate_certs: no
 
     - name: Create gateway sqldb credentials
       kubernetes.core.k8s:
