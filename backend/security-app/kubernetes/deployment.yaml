@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: security-app
-          image: lalithkrg/security-app
+          image: deepesh007/security-app
           ports:
             - containerPort: 9100
           env:   # Setting Enviornmental Variables

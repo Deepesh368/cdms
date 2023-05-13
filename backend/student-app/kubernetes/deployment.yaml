@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: student-app
-          image: lalithkrg/student-app
+          image: deepesh007/student-app
           ports:
             - containerPort: 9200
           env:   # Setting Enviornmental Variables

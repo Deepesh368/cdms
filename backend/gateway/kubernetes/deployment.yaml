@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: lalithkrg/gateway
+          image: deepesh007/gateway
           ports:
             - containerPort: 9090
           env:   # Setting Enviornmental Variables

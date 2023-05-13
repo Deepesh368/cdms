@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
         - name: cdms-frontend
-          image: lalithkrg/cdms-frontend
+          image: deepesh007/cdms-frontend
