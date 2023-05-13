@@ -1,2 +1,2 @@
 [ubuntu20]
-172.16.138.113 ansible_user=lalith
+192.168.49.2 ansible_user=lalith

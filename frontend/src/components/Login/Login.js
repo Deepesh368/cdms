@@ -21,7 +21,7 @@ export default function LogIn() {
 
   useEffect(() => {
     axios.post("http://192.168.49.2:30163/gateway/populateData")
-    .catch(function(error)){console.log(error)};
+    .catch(function(error){console.log(error)});
 
     if (localStorage.getItem("user-info")) {
       let stored = JSON.parse(localStorage.getItem("user-info"));
