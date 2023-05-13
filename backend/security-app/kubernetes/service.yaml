@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-app-svc
+  namespace: default
+  labels:
+    name: security-app
+spec:
+  ports:
+    - nodePort: 30164
+      port: 9100
+      targetPort: 9100
+      protocol: TCP
+  selector:
+    app: security-app
+  type: NodePort
