@@ -9,12 +9,6 @@
           - pyyaml
           - kubernetes
 
-    # - name: Get list of namespaces using k8s module with custom kube-config file
-    #   k8s_info:
-    #     kind: NamespaceList
-    #     kubeconfig: /home/rizwan/.kube/config
-    #   register: namespaces
-
     - name: Create gateway sqldb credentials
       kubernetes.core.k8s:
         state: present
