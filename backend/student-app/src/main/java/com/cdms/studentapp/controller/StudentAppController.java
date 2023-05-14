@@ -2,6 +2,8 @@ package com.cdms.studentapp.controller;
 
 import com.cdms.studentapp.service.StudentAppService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ import java.util.Objects;
 @RequestMapping("/student")
 @CrossOrigin
 public class StudentAppController {
+
+    public static final Logger logger = LogManager.getLogger(StudentAppController.class);
+
     private final StudentAppService studentAppService;
     private final String gatewayIp = "http://192.168.49.2:30163";
 
@@ -56,7 +61,9 @@ public class StudentAppController {
 
 //        FetchOrderBody fetchOrderBody = new FetchOrderBody(this.studentAppService.getRollNum());
         String url = gatewayIp + "/gateway/fetchOrders";
+        logger.info("Request to fetch orders of: [" + fetchOrderBody.rollNum);
         ResponseEntity<OnFetchOrderBody> re = this.restTemplate.postForEntity(url, fetchOrderBody, OnFetchOrderBody.class);
+        logger.info("Fetched orders of: [" + fetchOrderBody.rollNum + "], count: [" + Objects.requireNonNull(re.getBody()).orders.size() + "]");
         for(OrderBody orderBody: Objects.requireNonNull(re.getBody()).orders()){
             System.out.println(orderBody);
         }

@@ -6,7 +6,7 @@ server:
 #    name: STUDENT-SERVICE
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/Student_db
-#    username: lalith
+#    username: root
 #    password: lalith
 #  jpa:
 #    hibernate:
