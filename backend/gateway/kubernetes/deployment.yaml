@@ -22,7 +22,7 @@ spec:
             - name: data
               mountPath: /logs
           env:   # Setting Enviornmental Variables
-            - name: DB_HOST   # Setting Database host address from configMap
+            - name: DB_HOST   # Setting Database host address from config
               valueFrom:
                 configMapKeyRef:
                   name: db-conf  # name of configMap
