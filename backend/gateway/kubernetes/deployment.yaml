@@ -42,4 +42,7 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: password
-        
+      volumes:
+        - name: data
+          hostPath:
+            path: /home/docker  
