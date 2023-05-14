@@ -18,6 +18,9 @@ spec:
           image: deepesh007/student-app
           ports:
             - containerPort: 9200
+          volumeMounts:
+            - name: data
+              mountPath: /logs
           env:   # Setting Enviornmental Variables
             - name: DB_HOST   # Setting Database host address from configMap
               valueFrom:
@@ -39,3 +42,7 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: password
+      volumes:
+        - name: data
+          hostPath:
+            path: /home/docker  
