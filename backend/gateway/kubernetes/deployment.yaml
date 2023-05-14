@@ -18,6 +18,9 @@ spec:
           image: deepesh007/gateway
           ports:
             - containerPort: 9090
+          volumeMounts:
+            - name: data
+              mountPath: /logs
           env:   # Setting Enviornmental Variables
             - name: DB_HOST   # Setting Database host address from configMap
               valueFrom:
